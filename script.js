@@ -22,37 +22,54 @@ console.log(MY_OBJECT, COPY_OF_OBJECT);
 
 /* 2 Задача */
 function selectFromInterval(arr, int1, int2) {
-  if (!arr.every(Number)) {
+  const isValid =
+    Array.isArray(arr) &&
+    arr.every(Number) &&
+    typeof int1 === 'number' &&
+    typeof int2 === 'number';
+
+  if (!isValid) {
     throw new Error('Ошибка!');
-  } else if (!Array.isArray(arr)) {
-    throw new Error('Ошибка!');
-  } else if (typeof int1 !== 'number' || typeof int2 !== 'number') {
-    throw new Error('Ошибка!');
-  } else {
-    if (int1 < int2) {
-      console.log(arr.slice(int1, int2));
-    } else {
-      if (int1 > int2) {
-        console.log(arr.slice(int2, int1));
-      }
-    }
+  }
+
+  if (int1 < int2) {
+    console.log(arr.slice(int1, int2));
+  }
+
+  if (int1 > int2) {
+    console.log(arr.slice(int2, int1));
   }
 }
 
 selectFromInterval([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 7);
 
 /* 3 Задача */
-const myIterable = { from: 1, to: 10 };
+const myIterable = {
+  from: 1,
+  to: 4,
+  [Symbol.iterator]() {
+    return {
+      current: this.from - 1,
+      last: this.to,
+      next() {
+        this.current += 1;
+        return {
+          done: this.current > this.last,
+          value: this.current
+        };
+      }
+    };
+  }
+};
 
-const conditions =
-  myIterable.from > myIterable.to ||
-  typeof myIterable.from !== 'number' ||
-  typeof myIterable.to !== 'number';
+const isValid =
+  myIterable.from < myIterable.to &&
+  typeof myIterable.from === 'number' &&
+  typeof myIterable.to === 'number';
 
-if (conditions) {
-  throw new Error('Ошибка');
+if (!isValid) {
+  throw new Error('Ошибка!');
 }
 
-for (let item = myIterable.from; item <= myIterable.to; item++) {
-  console.log(item);
-}
+for (const num of myIterable) {
+  console.log(num);
