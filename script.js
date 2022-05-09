@@ -43,13 +43,16 @@ selectFromInterval([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 7);
 
 /* 3 Задача */
 const myIterable = { from: 1, to: 10 };
-if (
+
+const conditions =
   myIterable.from > myIterable.to ||
   typeof myIterable.from !== 'number' ||
-  typeof myIterable.to !== 'number'
-) {
+  typeof myIterable.to !== 'number';
+
+if (conditions) {
   throw new Error('Ошибка');
 }
+
 for (let item = myIterable.from; item <= myIterable.to; item++) {
   console.log(item);
 }
